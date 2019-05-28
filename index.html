@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>welcome!</title>
+</head>
+
+<body>
+  <h1>welcome</h1>
+  <div class="main-div" id="loginDiv">
+    <input type="email" id="email" placeholder="email">
+    <input type="password" id="password" placeholder="password">
+
+    <button onclick="login()">Login</button>
+    <button onclick="googlelogin()">Google</button>
+    <button onclick="signIn()">SignIn</button>
+
+
+  </div>
+  <div class="main-div" id="welcomeDiv">
+    <p id="userWelcome"></p>
+    <br>
+    <p id="object"></p>
+    <button onclick="logout()">Logout</button>
+
+  </div>
+
+  <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCVWx3sgwdZjjtQmn0dx0CJNcwQHq-coUk",
+      authDomain: "tset-cacdf.firebaseapp.com",
+      databaseURL: "https://tset-cacdf.firebaseio.com",
+      projectId: "tset-cacdf",
+      storageBucket: "tset-cacdf.appspot.com",
+      messagingSenderId: "715300610734",
+      appId: "1:715300610734:web:121a7576cf1ef3cd"
+    };
+
+
+// Get a reference to the database service
+
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+
+
+  </script>
+  <script src="index.js"></script>
+</body>
+
+</html>
