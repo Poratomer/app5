@@ -1,4 +1,5 @@
-
+var db = firebase.firestore();
+console.log("hey");
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
@@ -8,6 +9,28 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (user != null) {
       var email_id = user.email;
       document.getElementById("userWelcome").innerHTML = email_id;
+      const listDiv = document.querySelector("#list_div");
+      db.collection("lessons").get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+              // doc.data() is never undefined for query doc snapshots
+              var d = (doc.data().hour).toDate();
+              var b = 2- (doc.data().par);
+
+              var c = doc.id;
+              // console.log(d.toLocaleTimeString());
+              console.log(c);
+
+              listDiv.innerHTML +=
+              "<div class='list_item'><h2>"+ d.toDateString()+"</h2><p>"+d.toLocaleTimeString() + " - in this lesson there is room for "+b+" more</p><button onclick='signLesson("+c+")'>sign</button></div>"
+
+              // op2.innerHTML +="<button>hey</button>";
+              // document.getElementById("list").innerHTML = "<p>" + doc.id + " "+ doc.data().hour + "</p>";
+          });
+      });
+      db.collection("lessons").doc("Sunday").onSnapshot(function(doc) {
+        console.log("Current data: ", doc.data().par);
+    });
+
       // const preObject = document.getElementById("object");
       // // Get a reference to the database service
       const databaseObject = firebase.database().ref().child("Object");
@@ -22,8 +45,42 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+function signLesson(id){
+  var docRef = db.collection("lessons").doc(id);
+    docRef.get().then(function(doc) {
+      if (doc.exists) {
+          var a=(doc.data().par);
+          a++;
+          console.log(a);
+          db.collection("lessons").doc(id).update({par: a})
+          .then(function(){
+            console.log("success");
+            document.location.reload(true);
+          })
+          .catch(function(error){
+            console.log(error);
+          });
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+      }
+  }).catch(function(error) {
+      console.log("Error getting document:", error);
+  });
+
+};
 
 function login() {
+  // add lesson
+  // db.collection("lessons").doc("sunday").set({hour: "8:00"})
+  // .then(function(){
+  //   console.log("success");
+  // })
+  // .catch(function(error){
+  //   console.log(error);
+  // });
+
+
   var userEmail = document.getElementById("email").value;
   var userPass = document.getElementById("password").value;
   // alert (userEmail);
@@ -39,6 +96,7 @@ function login() {
 function signIn(){
   var userEmail = document.getElementById("email").value;
   var userPass = document.getElementById("password").value;
+  var name = document.getElementById("name").value;
   firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
